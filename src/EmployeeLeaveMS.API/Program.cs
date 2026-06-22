@@ -1,3 +1,4 @@
+using EmployeeLeaveMS.Infrastructure;
 using EmployeeLeaveMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,12 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Register AppDbContext with SQL Server, using the connection string from appsettings
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeLeaveBD")));
-
-
+// Infrastructure layer registers itself - AppDbContext + UnitOfWork + all repositories
+builder.Services.AddInfrastructure(builder.Configuration);
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
