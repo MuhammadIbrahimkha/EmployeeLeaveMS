@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\EmployeeLeaveMS.Application\EmployeeLeaveMS.Application.csproj" />
     <ProjectReference Include="..\EmployeeLeaveMS.Infrastructure\EmployeeLeaveMS.Infrastructure.csproj" />
   </ItemGroup>

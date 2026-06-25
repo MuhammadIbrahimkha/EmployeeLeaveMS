@@ -1,5 +1,7 @@
 ﻿using EmployeeLeaveMS.Application.Interfaces;
+using EmployeeLeaveMS.Application.Interfaces.Services;
 using EmployeeLeaveMS.Infrastructure.Data;
+using EmployeeLeaveMS.Infrastructure.Helpers;
 using EmployeeLeaveMS.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,8 @@ namespace EmployeeLeaveMS.Infrastructure
             // Register UnitOfWork - this gives access to all repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddScoped<IJwtHelper, JwtHelper>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
             return services;
         }
     }

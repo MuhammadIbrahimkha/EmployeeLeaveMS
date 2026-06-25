@@ -1,0 +1,19 @@
+﻿namespace EmployeeLeaveMS.Application.DTOs
+{
+    public class ServiceResult<T>
+    {
+        public bool Success { get; set; }
+        public string? Message { get; set; }
+        public T? Data { get; set; }
+        public List<string> Errors { get; set; } = new();
+
+        public static ServiceResult<T> Ok(T data, string? message = null) =>
+            new() { Success = true, Data = data, Message = message };
+
+        public static ServiceResult<T> Fail(string error) =>
+            new() { Success = false, Errors = new List<string> { error } };
+
+        public static ServiceResult<T> Fail(List<string> errors) =>
+            new() { Success = false, Errors = errors };
+    }
+}

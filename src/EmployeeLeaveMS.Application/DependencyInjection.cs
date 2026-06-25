@@ -1,0 +1,17 @@
+﻿using EmployeeLeaveMS.Application.Interfaces.Services;
+using EmployeeLeaveMS.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace EmployeeLeaveMS.Application
+{
+    public static class DependencyInjection
+    {
+        public static IServiceCollection AddApplication(
+            this IServiceCollection services)
+        {
+            services.AddScoped<IAuthService, AuthService>();
+
+            return services;
+        }
+    }
+}
