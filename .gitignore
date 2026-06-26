@@ -9,7 +9,7 @@ obj/
 
 # User secrets and sensitive config
 appsettings.Development.json
-
+logs/
 # OS files
 .DS_Store
 Thumbs.db
