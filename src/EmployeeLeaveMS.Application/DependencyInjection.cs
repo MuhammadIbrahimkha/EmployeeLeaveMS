@@ -10,7 +10,7 @@ namespace EmployeeLeaveMS.Application
             this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
-
+            services.AddScoped<ILeaveService, LeaveService>();
             return services;
         }
     }
