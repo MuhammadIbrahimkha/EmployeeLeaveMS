@@ -14,7 +14,10 @@ namespace EmployeeLeaveMS.Infrastructure
         private IUserRepository? users;
         private ILeaveRequestRepository? leaveRequests;
         private ILeaveBalanceRepository? leaveBalances;
+        private ILeaveTypeRepository? leaveTypes;
+        private IDepartmentRepository? departments;
         private IRefreshTokenRepository? refreshTokens;
+        
 
 
         public UnitOfWork(AppDbContext context)
@@ -28,6 +31,12 @@ namespace EmployeeLeaveMS.Infrastructure
             leaveRequests ??= new LeaveRequestRepository(context);
         public ILeaveBalanceRepository LeaveBalances =>
             leaveBalances ??= new LeaveBalanceRepository(context);
+
+        public ILeaveTypeRepository LeaveTypes =>
+        leaveTypes ??= new LeaveTypeRepository(context);
+
+        public IDepartmentRepository Departments =>
+            departments ??= new DepartmentRepository(context);
         public IRefreshTokenRepository RefreshTokens =>
             refreshTokens ??= new RefreshTokenRepository(context);
 

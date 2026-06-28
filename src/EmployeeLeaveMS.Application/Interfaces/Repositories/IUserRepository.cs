@@ -6,6 +6,11 @@ namespace EmployeeLeaveMS.Application.Interfaces.Repositories
     {
         Task<User?> GetByEmailAsync(string email);
         Task<IEnumerable<User>> GetByDepartmentAsync(Guid departmentId);
+
+        Task<IEnumerable<User>> GetAllEmployeesAsync();
+
+        Task<User?> GetByIdWithDetailsAsync(Guid id);
+
         Task<bool> EmailExistsAsync(string email);
     }
 }

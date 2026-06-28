@@ -9,6 +9,8 @@ namespace EmployeeLeaveMS.Application.Interfaces
         ILeaveRequestRepository LeaveRequests { get; }
 
         ILeaveBalanceRepository LeaveBalances { get; }
+        ILeaveTypeRepository LeaveTypes { get; }
+        IDepartmentRepository Departments { get; }
         IRefreshTokenRepository RefreshTokens { get; }
 
         Task<int> SaveChangesAsync();

@@ -24,6 +24,23 @@ namespace EmployeeLeaveMS.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<User>> GetAllEmployeesAsync()
+        {
+            return await _dbSet
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .Where(u => u.IsActive)
+                .OrderBy(u => u.FullName)
+                .ToListAsync();
+        }
+
+        public async Task<User?> GetByIdWithDetailsAsync(Guid id)
+        {
+            return await _dbSet
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
         public async Task<bool> EmailExistsAsync(string email)
         {
             return await _dbSet

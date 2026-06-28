@@ -11,6 +11,8 @@ namespace EmployeeLeaveMS.Application
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ILeaveService, LeaveService>();
+            services.AddScoped<ILeaveTypeService, LeaveTypeService>();
+            services.AddScoped<IAdminService, AdminService>();
             return services;
         }
     }
