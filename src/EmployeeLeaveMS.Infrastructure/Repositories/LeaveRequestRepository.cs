@@ -15,6 +15,7 @@ namespace EmployeeLeaveMS.Infrastructure.Repositories
         public async Task<IEnumerable<LeaveRequest>> GetByEmployeeAsync(Guid employeeId)
         {
             return await _dbSet
+                .Include(lr => lr.Employee)
                 .Include(lr => lr.LeaveType)
                 .Include(lr => lr.ReviewedBy)
                 .Where(lr => lr.EmployeeId == employeeId)

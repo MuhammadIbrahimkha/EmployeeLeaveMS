@@ -1,4 +1,5 @@
 ﻿using EmployeeLeaveMS.Application.Interfaces.Services;
+using EmployeeLeaveMS.Application.Mappings;
 using EmployeeLeaveMS.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,9 @@ namespace EmployeeLeaveMS.Application
         public static IServiceCollection AddApplication(
             this IServiceCollection services)
         {
+
+            services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ILeaveService, LeaveService>();
             services.AddScoped<ILeaveTypeService, LeaveTypeService>();
