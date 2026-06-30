@@ -1,4 +1,5 @@
-﻿using EmployeeLeaveMS.Domain.Entities;
+﻿using EmployeeLeaveMS.Application.DTOs.Common;
+using EmployeeLeaveMS.Domain.Entities;
 using EmployeeLeaveMS.Domain.Enums;
 
 namespace EmployeeLeaveMS.Application.Interfaces.Repositories
@@ -11,5 +12,9 @@ namespace EmployeeLeaveMS.Application.Interfaces.Repositories
         Task<IEnumerable<LeaveRequest>> GetByStatusAsync(LeaveStatus status);
 
         Task<bool> HasOverlappingLeaveAsync(Guid employeeId, DateOnly startDate, DateOnly endDate);
+
+        IQueryable<LeaveRequest> GetFilteredQuery(LeaveFilterParams filterParams);
+        IQueryable<LeaveRequest> GetByEmployeeQuery(Guid employeeId);
+        IQueryable<LeaveRequest> GetPendingByManagerQuery(Guid managerId);
     }
 }

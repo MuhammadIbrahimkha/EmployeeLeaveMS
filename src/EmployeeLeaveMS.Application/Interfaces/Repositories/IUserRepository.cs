@@ -12,5 +12,7 @@ namespace EmployeeLeaveMS.Application.Interfaces.Repositories
         Task<User?> GetByIdWithDetailsAsync(Guid id);
 
         Task<bool> EmailExistsAsync(string email);
+
+        IQueryable<User> GetEmployeesQuery(string? search);
     }
 }

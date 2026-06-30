@@ -1,4 +1,5 @@
 ﻿using EmployeeLeaveMS.Application.DTOs.Admin;
+using EmployeeLeaveMS.Application.DTOs.Common;
 using EmployeeLeaveMS.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +20,14 @@ namespace EmployeeLeaveMS.API.Controllers
 
         // ── Employee Management ────────────────────────────────────────────
 
+
         [HttpGet("employees")]
-        public async Task<IActionResult> GetAllEmployees()
+        public async Task<IActionResult> GetAllEmployees(
+            [FromQuery] EmployeeSearchParams searchParams)
         {
-            var result = await _adminService.GetAllEmployeesAsync();
+            var result = await _adminService.GetAllEmployeesPagedAsync(searchParams);
             return Ok(result);
         }
-
         [HttpGet("employees/{id}")]
         public async Task<IActionResult> GetEmployee(Guid id)
         {
@@ -35,6 +37,14 @@ namespace EmployeeLeaveMS.API.Controllers
         }
 
         // ── Leave Balance Management ───────────────────────────────────────
+
+        [HttpGet("leaves")]
+        public async Task<IActionResult> GetAllLeaves(
+         [FromQuery] LeaveFilterParams filterParams)
+        {
+            var result = await _adminService.GetAllLeavesAsync(filterParams);
+            return Ok(result);
+        }
 
         [HttpPost("leave-balances")]
         public async Task<IActionResult> AssignBalance(

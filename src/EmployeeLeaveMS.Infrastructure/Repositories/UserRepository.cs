@@ -46,5 +46,24 @@ namespace EmployeeLeaveMS.Infrastructure.Repositories
             return await _dbSet
                 .AnyAsync(u => u.Email.ToLower() == email.ToLower());
         }
+
+        public IQueryable<User> GetEmployeesQuery(string? search)
+        {
+            var query = _dbSet
+                .Include(u => u.Department)
+                .Include(u => u.Manager)
+                .Where(u => u.IsActive)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var lowerSearch = search.ToLower();
+                query = query.Where(u =>
+                    u.FullName.ToLower().Contains(lowerSearch) ||
+                    u.Email.ToLower().Contains(lowerSearch));
+            }
+
+            return query.OrderBy(u => u.FullName);
+        }
     }
 }

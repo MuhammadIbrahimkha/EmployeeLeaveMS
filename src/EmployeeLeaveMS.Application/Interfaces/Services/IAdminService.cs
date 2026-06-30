@@ -1,5 +1,7 @@
 ﻿using EmployeeLeaveMS.Application.DTOs;
 using EmployeeLeaveMS.Application.DTOs.Admin;
+using EmployeeLeaveMS.Application.DTOs.Common;
+using EmployeeLeaveMS.Application.DTOs.Leave;
 
 namespace EmployeeLeaveMS.Application.Interfaces.Services
 {
@@ -18,5 +20,11 @@ namespace EmployeeLeaveMS.Application.Interfaces.Services
         Task<ServiceResult<IEnumerable<DepartmentDto>>> GetAllDepartmentsAsync();
         Task<ServiceResult<DepartmentDto>> CreateDepartmentAsync(CreateDepartmentDto dto);
         Task<ServiceResult<DepartmentDto>> AssignManagerAsync(Guid departmentId, Guid managerId);
+
+        Task<ServiceResult<PagedResult<LeaveRequestDto>>> GetAllLeavesAsync(
+    LeaveFilterParams filterParams);
+
+        Task<ServiceResult<PagedResult<EmployeeDto>>> GetAllEmployeesPagedAsync(
+            EmployeeSearchParams searchParams);
     }
 }

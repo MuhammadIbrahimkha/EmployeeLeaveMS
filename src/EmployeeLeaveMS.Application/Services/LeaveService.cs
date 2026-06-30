@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using EmployeeLeaveMS.Application.DTOs;
+using EmployeeLeaveMS.Application.DTOs.Common;
 using EmployeeLeaveMS.Application.DTOs.Leave;
+using EmployeeLeaveMS.Application.Extensions;
 using EmployeeLeaveMS.Application.Helpers;
 using EmployeeLeaveMS.Application.Interfaces;
 using EmployeeLeaveMS.Application.Interfaces.Services;
@@ -231,6 +233,48 @@ namespace EmployeeLeaveMS.Application.Services
             return ServiceResult<LeaveRequestDto>.Ok(
                 _mapper.Map<LeaveRequestDto>(result),
                 "Leave request rejected.");
+        }
+
+        public async Task<ServiceResult<PagedResult<LeaveRequestDto>>> GetMyLeavesPagedAsync(
+    Guid employeeId, PaginationParams paginationParams)
+        {
+            var query = _unitOfWork.LeaveRequests.GetByEmployeeQuery(employeeId);
+
+            var pagedEntities = await query.ToPagedResultAsync(
+                paginationParams.PageNumber, paginationParams.PageSize);
+
+            var dtoItems = _mapper.Map<IEnumerable<LeaveRequestDto>>(pagedEntities.Items);
+
+            var result = new PagedResult<LeaveRequestDto>
+            {
+                Items = dtoItems,
+                TotalCount = pagedEntities.TotalCount,
+                PageNumber = pagedEntities.PageNumber,
+                PageSize = pagedEntities.PageSize,
+            };
+
+            return ServiceResult<PagedResult<LeaveRequestDto>>.Ok(result);
+        }
+
+        public async Task<ServiceResult<PagedResult<LeaveRequestDto>>> GetTeamRequestsPagedAsync(
+            Guid managerId, PaginationParams paginationParams)
+        {
+            var query = _unitOfWork.LeaveRequests.GetPendingByManagerQuery(managerId);
+
+            var pagedEntities = await query.ToPagedResultAsync(
+                paginationParams.PageNumber, paginationParams.PageSize);
+
+            var dtoItems = _mapper.Map<IEnumerable<LeaveRequestDto>>(pagedEntities.Items);
+
+            var result = new PagedResult<LeaveRequestDto>
+            {
+                Items = dtoItems,
+                TotalCount = pagedEntities.TotalCount,
+                PageNumber = pagedEntities.PageNumber,
+                PageSize = pagedEntities.PageSize,
+            };
+
+            return ServiceResult<PagedResult<LeaveRequestDto>>.Ok(result);
         }
     }
 }

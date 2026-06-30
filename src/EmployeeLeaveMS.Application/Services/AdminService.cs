@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using EmployeeLeaveMS.Application.DTOs;
 using EmployeeLeaveMS.Application.DTOs.Admin;
+using EmployeeLeaveMS.Application.DTOs.Common;
+using EmployeeLeaveMS.Application.DTOs.Leave;
+using EmployeeLeaveMS.Application.Extensions;
 using EmployeeLeaveMS.Application.Interfaces;
 using EmployeeLeaveMS.Application.Interfaces.Services;
 using EmployeeLeaveMS.Domain.Entities;
@@ -214,6 +217,48 @@ namespace EmployeeLeaveMS.Application.Services
             return ServiceResult<DepartmentDto>.Ok(
                 _mapper.Map<DepartmentDto>(result),
                 "Manager assigned to department successfully.");
+        }
+
+        public async Task<ServiceResult<PagedResult<LeaveRequestDto>>> GetAllLeavesAsync(
+    LeaveFilterParams filterParams)
+        {
+            var query = _unitOfWork.LeaveRequests.GetFilteredQuery(filterParams);
+
+            var pagedEntities = await query.ToPagedResultAsync(
+                filterParams.PageNumber, filterParams.PageSize);
+
+            var dtoItems = _mapper.Map<IEnumerable<LeaveRequestDto>>(pagedEntities.Items);
+
+            var result = new PagedResult<LeaveRequestDto>
+            {
+                Items = dtoItems,
+                TotalCount = pagedEntities.TotalCount,
+                PageNumber = pagedEntities.PageNumber,
+                PageSize = pagedEntities.PageSize,
+            };
+
+            return ServiceResult<PagedResult<LeaveRequestDto>>.Ok(result);
+        }
+
+        public async Task<ServiceResult<PagedResult<EmployeeDto>>> GetAllEmployeesPagedAsync(
+            EmployeeSearchParams searchParams)
+        {
+            var query = _unitOfWork.Users.GetEmployeesQuery(searchParams.Search);
+
+            var pagedEntities = await query.ToPagedResultAsync(
+                searchParams.PageNumber, searchParams.PageSize);
+
+            var dtoItems = _mapper.Map<IEnumerable<EmployeeDto>>(pagedEntities.Items);
+
+            var result = new PagedResult<EmployeeDto>
+            {
+                Items = dtoItems,
+                TotalCount = pagedEntities.TotalCount,
+                PageNumber = pagedEntities.PageNumber,
+                PageSize = pagedEntities.PageSize,
+            };
+
+            return ServiceResult<PagedResult<EmployeeDto>>.Ok(result);
         }
     }
 }

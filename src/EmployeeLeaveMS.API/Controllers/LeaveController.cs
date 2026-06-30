@@ -1,4 +1,5 @@
-﻿using EmployeeLeaveMS.Application.DTOs.Leave;
+﻿using EmployeeLeaveMS.Application.DTOs.Common;
+using EmployeeLeaveMS.Application.DTOs.Leave;
 using EmployeeLeaveMS.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,9 +37,10 @@ namespace EmployeeLeaveMS.API.Controllers
         }
 
         [HttpGet("my-leaves")]
-        public async Task<IActionResult> GetMyLeaves()
+        public async Task<IActionResult> GetMyLeaves([FromQuery] PaginationParams paginationParams)
         {
-            var result = await _leaveService.GetMyLeavesAsync(_currentUser.UserId);
+            var result = await _leaveService
+                .GetMyLeavesPagedAsync(_currentUser.UserId, paginationParams);
             return Ok(result);
         }
 
@@ -64,10 +66,10 @@ namespace EmployeeLeaveMS.API.Controllers
 
         [HttpGet("team-requests")]
         [Authorize(Roles = "Manager,Admin")]
-        public async Task<IActionResult> GetTeamRequests()
+        public async Task<IActionResult> GetTeamRequests([FromQuery] PaginationParams paginationParams)
         {
             var result = await _leaveService
-                .GetTeamRequestsAsync(_currentUser.UserId);
+                .GetTeamRequestsPagedAsync(_currentUser.UserId, paginationParams);
             return Ok(result);
         }
 
