@@ -7,6 +7,7 @@ using Serilog;
 using System.Text;
 using EmployeeLeaveMS.API.Services;
 using EmployeeLeaveMS.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Mvc;
 
 // Configure Serilog BEFORE building the host
 // This ensures even startup errors are captured
@@ -50,7 +51,28 @@ try
         };
     });
 
-    builder.Services.AddControllers();
+
+    builder.Services.AddControllers()
+        .ConfigureApiBehaviorOptions(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                var errors = context.ModelState
+                    .Where(e => e.Value!.Errors.Count > 0)
+                    .SelectMany(e => e.Value!.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new EmployeeLeaveMS.API.Models.ErrorResponse
+                {
+                    StatusCode = 400,
+                    Message = "One or more validation errors occurred.",
+                    Errors = errors
+                };
+
+                return new BadRequestObjectResult(response);
+            };
+        });
     builder.Services.AddEndpointsApiExplorer();
 
     builder.Services.AddSwaggerGen(options =>
