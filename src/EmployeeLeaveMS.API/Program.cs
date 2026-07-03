@@ -112,6 +112,22 @@ try
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowReactApp", policy =>
+        {
+            policy.WithOrigins(
+                    "http://localhost:5173",  // Vite default port
+                    "http://localhost:3000"   // fallback if port changes
+                  )
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+    });
+
+
+
     var app = builder.Build();
 
     app.UseMiddleware<GlobalExceptionMiddleware>();
@@ -126,7 +142,7 @@ try
 
     // Custom request logging - adds RequestId and UserId context
     app.UseMiddleware<RequestLoggingMiddleware>();
-
+    app.UseCors("AllowReactApp");
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
