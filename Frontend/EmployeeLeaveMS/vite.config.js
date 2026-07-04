@@ -1,16 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite' // 1. Add this import
+import tailwindcss from '@tailwindcss/vite' 
 
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(), // 2. Add this plugin right here
+    tailwindcss(), 
   ],
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://localhost:7012',
         changeOrigin: true,
         secure: false,
       }
