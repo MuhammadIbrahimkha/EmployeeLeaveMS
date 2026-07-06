@@ -73,7 +73,7 @@ export default function RegisterPage() {
 
     setIsLoading(true)
     try {
-      const { confirmPassword, ...registerData } = formData
+const { confirmPassword: _confirmPassword, ...registerData } = formData
       const response = await authApi.register(registerData)
       const { accessToken, refreshToken, fullName, email, role } =
         response.data.data

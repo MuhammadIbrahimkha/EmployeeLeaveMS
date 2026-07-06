@@ -5,6 +5,9 @@ import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import UnauthorizedPage from './pages/UnauthorizedPage'
 import EmployeeDashboardPage from './pages/employee/EmployeeDashboardPage'
+import ApplyLeavePage from './pages/employee/ApplyLeavePage'
+import MyLeavesPage from './pages/employee/MyLeavesPage'
+import MyBalancePage from './pages/employee/MyBalancePage'
 
 const ManagerDashboard = () => <div className="text-2xl font-bold text-gray-700">Manager Dashboard — Day 7</div>
 const AdminDashboard   = () => <div className="text-2xl font-bold text-gray-700">Admin Dashboard — Day 8</div>
@@ -23,6 +26,9 @@ function App() {
             <Layout>
               <Routes>
                 <Route path="dashboard" element={<EmployeeDashboardPage />} />
+                <Route path="apply"     element={<ApplyLeavePage />} />
+                <Route path="leaves"    element={<MyLeavesPage />} />
+                <Route path="balance"   element={<MyBalancePage />} />
               </Routes>
             </Layout>
           </ProtectedRoute>
