@@ -78,7 +78,7 @@ export default function DepartmentsPage() {
         title="Departments"
         subtitle={`${departments.length} departments`}
         action={
-          <Button onClick={() => setShowModal(true)} className="w-auto px-6">
+          <Button onClick={() => setShowModal(true)} className="w-auto px-4 sm:px-6 text-sm">
             + New Department
           </Button>
         }
@@ -95,17 +95,18 @@ export default function DepartmentsPage() {
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {departments.map(dept => (
             <div key={dept.id} className="bg-white rounded-xl border border-gray-200 p-5">
               <div className="flex items-start justify-between mb-3">
                 <h3 className="font-semibold text-gray-800">{dept.name}</h3>
-                <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full flex-shrink-0 ml-2">
                   {dept.employeeCount} members
                 </span>
               </div>
               <p className="text-sm text-gray-500">
-                Manager: <span className="font-medium text-gray-700">
+                Manager:{' '}
+                <span className="font-medium text-gray-700">
                   {dept.managerName || 'Not assigned'}
                 </span>
               </p>

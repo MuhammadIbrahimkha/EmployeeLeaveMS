@@ -60,15 +60,19 @@ export default function AssignBalancePage() {
     setIsLoading(true)
     try {
       await adminApi.assignBalance({
-        employeeId: formData.employeeId,
+        employeeId:  formData.employeeId,
         leaveTypeId: formData.leaveTypeId,
-        totalDays: Number(formData.totalDays),
-        year: Number(formData.year),
+        totalDays:   Number(formData.totalDays),
+        year:        Number(formData.year),
       })
       setApiSuccess('Leave balance assigned successfully!')
       setFormData(prev => ({ ...prev, employeeId: '', leaveTypeId: '', totalDays: '' }))
     } catch (err) {
-      setApiError(err.response?.data?.errors?.[0] || err.response?.data?.message || 'Failed to assign balance.')
+      setApiError(
+        err.response?.data?.errors?.[0] ||
+        err.response?.data?.message ||
+        'Failed to assign balance.'
+      )
     } finally {
       setIsLoading(false)
     }
@@ -87,24 +91,23 @@ export default function AssignBalancePage() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="w-full max-w-2xl">
       <PageHeader
         title="Assign Leave Balance"
         subtitle="Assign leave entitlement to an employee for a specific year"
       />
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <Alert message={apiError} type="error" />
+      <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
+        <Alert message={apiError}   type="error"   />
         <Alert message={apiSuccess} type="success" />
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-2">
-          {/* Employee */}
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">
               Employee <span className="text-red-500">*</span>
             </label>
-            <select name="employeeId" value={formData.employeeId} onChange={handleChange}
-              className={selectClass(errors.employeeId)}>
+            <select name="employeeId" value={formData.employeeId}
+              onChange={handleChange} className={selectClass(errors.employeeId)}>
               <option value="">Select employee</option>
               {employees.map(emp => (
                 <option key={emp.id} value={emp.id}>
@@ -115,41 +118,29 @@ export default function AssignBalancePage() {
             {errors.employeeId && <p className="text-xs text-red-500">{errors.employeeId}</p>}
           </div>
 
-          {/* Leave Type */}
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">
               Leave Type <span className="text-red-500">*</span>
             </label>
-            <select name="leaveTypeId" value={formData.leaveTypeId} onChange={handleChange}
-              className={selectClass(errors.leaveTypeId)}>
+            <select name="leaveTypeId" value={formData.leaveTypeId}
+              onChange={handleChange} className={selectClass(errors.leaveTypeId)}>
               <option value="">Select leave type</option>
               {leaveTypes.map(lt => (
-                <option key={lt.id} value={lt.id}>{lt.name} (default: {lt.defaultDays} days)</option>
+                <option key={lt.id} value={lt.id}>
+                  {lt.name} (default: {lt.defaultDays} days)
+                </option>
               ))}
             </select>
             {errors.leaveTypeId && <p className="text-xs text-red-500">{errors.leaveTypeId}</p>}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Total Days"
-              name="totalDays"
-              type="number"
-              value={formData.totalDays}
-              onChange={handleChange}
-              error={errors.totalDays}
-              placeholder="e.g. 15"
-              required
-            />
-            <Input
-              label="Year"
-              name="year"
-              type="number"
-              value={formData.year}
-              onChange={handleChange}
-              error={errors.year}
-              required
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input label="Total Days" name="totalDays" type="number"
+              value={formData.totalDays} onChange={handleChange}
+              error={errors.totalDays} placeholder="e.g. 15" required />
+            <Input label="Year" name="year" type="number"
+              value={formData.year} onChange={handleChange}
+              error={errors.year} required />
           </div>
 
           <Button type="submit" isLoading={isLoading} className="mt-2">

@@ -41,7 +41,7 @@ export default function MyBalancePage() {
           <p className="text-gray-500 text-sm">No leave balances assigned. Contact HR Admin.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {balances.map(b => {
             const percentage = b.totalDays > 0
               ? Math.round((b.usedDays / b.totalDays) * 100)
@@ -54,13 +54,11 @@ export default function MyBalancePage() {
                   <span className="text-xs text-gray-400">{b.year}</span>
                 </div>
 
-                {/* Big remaining number */}
                 <div className="text-center mb-4">
                   <p className="text-5xl font-bold text-gray-800">{b.remainingDays}</p>
                   <p className="text-sm text-gray-400 mt-1">days remaining</p>
                 </div>
 
-                {/* Progress bar */}
                 <div className="w-full bg-gray-100 rounded-full h-3 mb-4">
                   <div
                     className={`h-3 rounded-full transition-all ${getBarColor(b.usedDays, b.totalDays)}`}
@@ -68,7 +66,6 @@ export default function MyBalancePage() {
                   />
                 </div>
 
-                {/* Stats row */}
                 <div className="grid grid-cols-3 text-center text-sm">
                   <div>
                     <p className="font-semibold text-gray-800">{b.totalDays}</p>

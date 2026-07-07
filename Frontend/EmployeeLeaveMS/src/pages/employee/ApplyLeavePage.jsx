@@ -51,20 +51,14 @@ export default function ApplyLeavePage() {
     e.preventDefault()
     setApiError('')
     setApiSuccess('')
-
     const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
       return
     }
-
     setIsLoading(true)
     try {
-      await leaveApi.apply({
-        ...formData,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-      })
+      await leaveApi.apply(formData)
       setApiSuccess('Leave request submitted successfully!')
       setTimeout(() => navigate('/employee/leaves'), 1500)
     } catch (err) {
@@ -79,18 +73,17 @@ export default function ApplyLeavePage() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="w-full max-w-2xl">
       <PageHeader
         title="Apply for Leave"
         subtitle="Submit a new leave request for approval"
       />
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
         <Alert message={apiError} type="error" />
         <Alert message={apiSuccess} type="success" />
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-2">
-          {/* Leave Type */}
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">
               Leave Type <span className="text-red-500">*</span>
@@ -113,8 +106,7 @@ export default function ApplyLeavePage() {
             )}
           </div>
 
-          {/* Date Range */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Start Date"
               type="date"
@@ -135,7 +127,6 @@ export default function ApplyLeavePage() {
             />
           </div>
 
-          {/* Reason */}
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">
               Reason <span className="text-red-500">*</span>
@@ -146,8 +137,8 @@ export default function ApplyLeavePage() {
               onChange={handleChange}
               rows={4}
               placeholder="Briefly describe the reason for your leave..."
-              className={`w-full px-3 py-2 border rounded-lg text-sm outline-none resize-none
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+              className={`w-full px-3 py-2 border rounded-lg text-sm outline-none
+                resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 ${errors.reason ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
             />
             {errors.reason && (
@@ -155,12 +146,12 @@ export default function ApplyLeavePage() {
             )}
           </div>
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Button
               type="button"
               variant="secondary"
               onClick={() => navigate(-1)}
-              className="w-auto px-6"
+              className="sm:w-auto px-6"
             >
               Cancel
             </Button>

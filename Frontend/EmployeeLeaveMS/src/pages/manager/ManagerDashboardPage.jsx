@@ -19,7 +19,7 @@ export default function ManagerDashboardPage() {
   return (
     <div>
       <PageHeader
-        title={`Manager Dashboard 👔`}
+        title="Manager Dashboard 👔"
         subtitle={`Welcome back, ${user?.fullName?.split(' ')[0]}`}
         action={
           <Link
@@ -33,23 +33,24 @@ export default function ManagerDashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {[
-          { label: 'Pending Requests', value: requests.length, icon: '⏳', color: 'bg-yellow-50' },
-          { label: 'Team Members', value: '—', icon: '👥', color: 'bg-blue-50' },
-          { label: 'Approved This Month', value: '—', icon: '✅', color: 'bg-green-50' },
+          { label: 'Pending Requests',    value: requests.length, icon: '⏳', color: 'bg-yellow-50' },
+          { label: 'Team Members',        value: '—',             icon: '👥', color: 'bg-blue-50'   },
+          { label: 'Approved This Month', value: '—',             icon: '✅', color: 'bg-green-50'  },
         ].map(card => (
           <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${card.color}`}>
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 ${card.color}`}>
               {card.icon}
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-2xl font-bold text-gray-800">{card.value}</p>
-              <p className="text-sm text-gray-500">{card.label}</p>
+              <p className="text-sm text-gray-500 truncate">{card.label}</p>
             </div>
           </div>
         ))}
       </div>
 
       <h3 className="text-lg font-semibold text-gray-700 mb-4">Pending Team Requests</h3>
+
       {isLoading ? (
         <div className="flex justify-center py-10">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
@@ -61,34 +62,33 @@ export default function ManagerDashboardPage() {
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                {['Employee', 'Leave Type', 'From', 'To', 'Days', 'Action'].map(h => (
-                  <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {requests.map(r => (
-                <tr key={r.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-800">{r.employeeName}</td>
-                  <td className="px-4 py-3 text-gray-600">{r.leaveTypeName}</td>
-                  <td className="px-4 py-3 text-gray-600">{r.startDate}</td>
-                  <td className="px-4 py-3 text-gray-600">{r.endDate}</td>
-                  <td className="px-4 py-3 text-gray-600">{r.totalDays}</td>
-                  <td className="px-4 py-3">
-                    <Link
-                      to="/manager/requests"
-                      className="text-xs text-blue-600 hover:underline"
-                    >
-                      Review →
-                    </Link>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[550px]">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  {['Employee', 'Leave Type', 'From', 'To', 'Days', 'Action'].map(h => (
+                    <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {requests.map(r => (
+                  <tr key={r.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-800">{r.employeeName}</td>
+                    <td className="px-4 py-3 text-gray-600">{r.leaveTypeName}</td>
+                    <td className="px-4 py-3 text-gray-600">{r.startDate}</td>
+                    <td className="px-4 py-3 text-gray-600">{r.endDate}</td>
+                    <td className="px-4 py-3 text-gray-600">{r.totalDays}</td>
+                    <td className="px-4 py-3">
+                      <Link to="/manager/requests" className="text-xs text-blue-600 hover:underline">
+                        Review →
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

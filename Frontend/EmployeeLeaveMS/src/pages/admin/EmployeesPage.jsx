@@ -35,7 +35,7 @@ export default function EmployeesPage() {
         totalPages: data.totalPages,
       })
     } catch {
-      // handle silently
+      //
     } finally {
       setIsLoading(false)
     }
@@ -69,31 +69,28 @@ export default function EmployeesPage() {
         subtitle={`${pagination.totalCount} total employees`}
       />
 
-      {/* Search */}
-      <form onSubmit={handleSearch} className="flex gap-3 mb-6">
+      <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 mb-6">
         <input
           type="text"
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           placeholder="Search by name or email..."
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none
-            focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm
+            outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
-        >
-          Search
-        </button>
-        {search && (
-          <button
-            type="button"
-            onClick={() => { setSearch(''); setSearchInput(''); load(1, '') }}
-            className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200"
-          >
-            Clear
+        <div className="flex gap-2">
+          <button type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+            Search
           </button>
-        )}
+          {search && (
+            <button type="button"
+              onClick={() => { setSearch(''); setSearchInput(''); load(1, '') }}
+              className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200">
+              Clear
+            </button>
+          )}
+        </div>
       </form>
 
       {isLoading ? (
@@ -108,43 +105,46 @@ export default function EmployeesPage() {
       ) : (
         <>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  {['Name', 'Email', 'Role', 'Department', 'Manager', 'Actions'].map(h => (
-                    <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {employees.map(emp => (
-                  <tr key={emp.id} className="hover:bg-gray-50 transition">
-                    <td className="px-4 py-3 font-medium text-gray-800">{emp.fullName}</td>
-                    <td className="px-4 py-3 text-gray-500">{emp.email}</td>
-                    <td className="px-4 py-3">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ROLE_COLORS[emp.role] || 'bg-gray-100'}`}>
-                        {emp.role}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-gray-600">{emp.departmentName || '—'}</td>
-                    <td className="px-4 py-3 text-gray-500">{emp.managerName || '—'}</td>
-                    <td className="px-4 py-3">
-                      <button
-                        onClick={() => handleViewBalances(emp)}
-                        className="text-xs px-3 py-1.5 border border-blue-300 text-blue-600
-                          rounded-lg hover:bg-blue-50 transition"
-                      >
-                        View Balance
-                      </button>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[700px]">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    {['Name', 'Email', 'Role', 'Department', 'Manager', 'Actions'].map(h => (
+                      <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {employees.map(emp => (
+                    <tr key={emp.id} className="hover:bg-gray-50 transition">
+                      <td className="px-4 py-3 font-medium text-gray-800">{emp.fullName}</td>
+                      <td className="px-4 py-3 text-gray-500">{emp.email}</td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ROLE_COLORS[emp.role] || 'bg-gray-100'}`}>
+                          {emp.role}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">{emp.departmentName || '—'}</td>
+                      <td className="px-4 py-3 text-gray-500">{emp.managerName || '—'}</td>
+                      <td className="px-4 py-3">
+                        <button
+                          onClick={() => handleViewBalances(emp)}
+                          className="text-xs px-3 py-1.5 border border-blue-300 text-blue-600
+                            rounded-lg hover:bg-blue-50 transition whitespace-nowrap"
+                        >
+                          View Balance
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {pagination.totalPages > 1 && (
-            <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center
+              justify-between mt-4 gap-3 text-sm text-gray-600">
               <p>
                 Showing {(pagination.pageNumber - 1) * pagination.pageSize + 1}–
                 {Math.min(pagination.pageNumber * pagination.pageSize, pagination.totalCount)} of {pagination.totalCount}
@@ -171,24 +171,23 @@ export default function EmployeesPage() {
         </>
       )}
 
-      {/* Balance Slide-over Panel */}
       {selectedEmployee && (
         <div className="fixed inset-0 bg-black/40 z-50 flex justify-end">
-          <div className="bg-white w-full max-w-md h-full overflow-y-auto shadow-xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-              <div>
-                <h3 className="font-bold text-gray-800">{selectedEmployee.fullName}</h3>
-                <p className="text-xs text-gray-500">{selectedEmployee.email}</p>
+          <div className="bg-white w-full sm:max-w-md h-full overflow-y-auto shadow-xl flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
+              <div className="min-w-0">
+                <h3 className="font-bold text-gray-800 truncate">{selectedEmployee.fullName}</h3>
+                <p className="text-xs text-gray-500 truncate">{selectedEmployee.email}</p>
               </div>
               <button
                 onClick={() => setSelectedEmployee(null)}
-                className="text-gray-400 hover:text-gray-600 text-xl font-bold"
+                className="ml-4 flex-shrink-0 text-gray-400 hover:text-gray-600 text-xl font-bold"
               >
                 ×
               </button>
             </div>
 
-            <div className="px-6 py-4">
+            <div className="px-6 py-4 flex-1">
               <h4 className="text-sm font-semibold text-gray-700 mb-3">
                 Leave Balance — {new Date().getFullYear()}
               </h4>
@@ -209,7 +208,7 @@ export default function EmployeesPage() {
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
-                          className="bg-blue-500 h-2 rounded-full"
+                          className="bg-blue-500 h-2 rounded-full transition-all"
                           style={{ width: `${b.totalDays > 0 ? (b.usedDays / b.totalDays) * 100 : 0}%` }}
                         />
                       </div>

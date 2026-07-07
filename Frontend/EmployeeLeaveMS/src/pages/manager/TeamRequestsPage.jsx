@@ -5,7 +5,7 @@ import Button from '../../components/Button'
 import Alert from '../../components/Alert'
 
 function ReviewModal({ request, onClose, onDone }) {
-  const [action, setAction] = useState(null) // 'approve' | 'reject'
+  const [action, setAction] = useState(null)
   const [comment, setComment] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -48,7 +48,6 @@ function ReviewModal({ request, onClose, onDone }) {
           <p className="mt-1"><span className="font-medium">Reason:</span> {request.reason}</p>
         </div>
 
-        {/* Action selector */}
         <div className="flex gap-3 mb-4">
           <button
             onClick={() => setAction('approve')}
@@ -70,7 +69,6 @@ function ReviewModal({ request, onClose, onDone }) {
           </button>
         </div>
 
-        {/* Comment */}
         {action && (
           <div className="mb-4">
             <label className="text-sm font-medium text-gray-700 block mb-1">
@@ -81,8 +79,8 @@ function ReviewModal({ request, onClose, onDone }) {
               onChange={e => setComment(e.target.value)}
               rows={3}
               placeholder={action === 'reject' ? 'Required — explain why...' : 'Optional message...'}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none
-                focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+                outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
         )}
@@ -128,7 +126,7 @@ export default function TeamRequestsPage() {
         totalPages: data.totalPages,
       })
     } catch {
-      // handle silently
+      //
     } finally {
       setIsLoading(false)
     }
@@ -150,7 +148,6 @@ export default function TeamRequestsPage() {
         subtitle={`${pagination.totalCount} pending requests from your team`}
       />
 
-      {/* Toast */}
       {toast && (
         <div className="mb-4 px-4 py-3 bg-green-50 border border-green-300 text-green-700 rounded-lg text-sm">
           {toast}
@@ -169,39 +166,43 @@ export default function TeamRequestsPage() {
       ) : (
         <>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  {['Employee', 'Leave Type', 'From', 'To', 'Days', 'Reason', 'Action'].map(h => (
-                    <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {requests.map(r => (
-                  <tr key={r.id} className="hover:bg-gray-50 transition">
-                    <td className="px-4 py-3 font-medium text-gray-800">{r.employeeName}</td>
-                    <td className="px-4 py-3 text-gray-600">{r.leaveTypeName}</td>
-                    <td className="px-4 py-3 text-gray-600">{r.startDate}</td>
-                    <td className="px-4 py-3 text-gray-600">{r.endDate}</td>
-                    <td className="px-4 py-3 text-gray-600">{r.totalDays}</td>
-                    <td className="px-4 py-3 text-gray-500 max-w-xs truncate">{r.reason}</td>
-                    <td className="px-4 py-3">
-                      <button
-                        onClick={() => setSelectedRequest(r)}
-                        className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                      >
-                        Review
-                      </button>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[650px]">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    {['Employee', 'Leave Type', 'From', 'To', 'Days', 'Reason', 'Action'].map(h => (
+                      <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {requests.map(r => (
+                    <tr key={r.id} className="hover:bg-gray-50 transition">
+                      <td className="px-4 py-3 font-medium text-gray-800">{r.employeeName}</td>
+                      <td className="px-4 py-3 text-gray-600">{r.leaveTypeName}</td>
+                      <td className="px-4 py-3 text-gray-600">{r.startDate}</td>
+                      <td className="px-4 py-3 text-gray-600">{r.endDate}</td>
+                      <td className="px-4 py-3 text-gray-600">{r.totalDays}</td>
+                      <td className="px-4 py-3 text-gray-500 max-w-[150px] truncate">{r.reason}</td>
+                      <td className="px-4 py-3">
+                        <button
+                          onClick={() => setSelectedRequest(r)}
+                          className="text-xs px-3 py-1.5 bg-blue-600 text-white
+                            rounded-lg hover:bg-blue-700 transition"
+                        >
+                          Review
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {pagination.totalPages > 1 && (
-            <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center
+              justify-between mt-4 gap-3 text-sm text-gray-600">
               <p>
                 Showing {(pagination.pageNumber - 1) * pagination.pageSize + 1}–
                 {Math.min(pagination.pageNumber * pagination.pageSize, pagination.totalCount)} of {pagination.totalCount}

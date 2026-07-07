@@ -55,25 +55,11 @@ function LeaveTypeModal({ leaveType, onClose, onDone }) {
         </h3>
         <Alert message={apiError} />
         <div className="flex flex-col gap-4 mt-3">
-          <Input
-            label="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            error={errors.name}
-            placeholder="e.g. Maternity"
-            required
-          />
-          <Input
-            label="Default Days"
-            name="defaultDays"
-            type="number"
-            value={formData.defaultDays}
-            onChange={handleChange}
-            error={errors.defaultDays}
-            placeholder="e.g. 15"
-            required
-          />
+          <Input label="Name" name="name" value={formData.name}
+            onChange={handleChange} error={errors.name} placeholder="e.g. Maternity" required />
+          <Input label="Default Days" name="defaultDays" type="number"
+            value={formData.defaultDays} onChange={handleChange}
+            error={errors.defaultDays} placeholder="e.g. 15" required />
         </div>
         <div className="flex gap-3 mt-6">
           <Button variant="secondary" onClick={onClose} className="w-auto px-5">Cancel</Button>
@@ -89,7 +75,7 @@ function LeaveTypeModal({ leaveType, onClose, onDone }) {
 export default function LeaveTypesPage() {
   const [leaveTypes, setLeaveTypes] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [modal, setModal] = useState(null) // null | 'create' | leaveTypeObject
+  const [modal, setModal] = useState(null)
   const [toast, setToast] = useState('')
   const [deactivatingId, setDeactivatingId] = useState(null)
 
@@ -112,7 +98,7 @@ export default function LeaveTypesPage() {
   const handleDone = () => { setModal(null); load(); showToast('Leave type saved successfully!') }
 
   const handleDeactivate = async (lt) => {
-    if (!window.confirm(`Deactivate "${lt.name}"? Employees won't be able to apply for it.`)) return
+    if (!window.confirm(`Deactivate "${lt.name}"?`)) return
     setDeactivatingId(lt.id)
     try {
       await leaveTypeApi.deactivate(lt.id)
@@ -131,7 +117,7 @@ export default function LeaveTypesPage() {
         title="Leave Types"
         subtitle="Manage available leave types for employees"
         action={
-          <Button onClick={() => setModal('create')} className="w-auto px-6">
+          <Button onClick={() => setModal('create')} className="w-auto px-4 sm:px-6 text-sm">
             + New Leave Type
           </Button>
         }
@@ -149,36 +135,36 @@ export default function LeaveTypesPage() {
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                {['Name', 'Default Days', 'Status', 'Created', 'Actions'].map(h => (
-                  <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {leaveTypes.map(lt => (
-                <tr key={lt.id} className={`hover:bg-gray-50 transition ${!lt.isActive ? 'opacity-50' : ''}`}>
-                  <td className="px-4 py-3 font-medium text-gray-800">{lt.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{lt.defaultDays} days</td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full
-                      ${lt.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
-                      {lt.isActive ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-400 text-xs">
-                    {new Date(lt.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-2">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[500px]">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  {['Name', 'Default Days', 'Status', 'Created', 'Actions'].map(h => (
+                    <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {leaveTypes.map(lt => (
+                  <tr key={lt.id} className={`hover:bg-gray-50 transition ${!lt.isActive ? 'opacity-50' : ''}`}>
+                    <td className="px-4 py-3 font-medium text-gray-800">{lt.name}</td>
+                    <td className="px-4 py-3 text-gray-600">{lt.defaultDays} days</td>
+                    <td className="px-4 py-3">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full
+                        ${lt.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                        {lt.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-400 text-xs">
+                      {new Date(lt.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
                       {lt.isActive && (
-                        <>
+                        <div className="flex gap-2">
                           <button
                             onClick={() => setModal(lt)}
                             className="text-xs px-3 py-1.5 border border-gray-300 text-gray-600
-                              rounded-lg hover:bg-gray-50 transition"
+                              rounded-lg hover:bg-gray-50 transition whitespace-nowrap"
                           >
                             Edit
                           </button>
@@ -186,18 +172,18 @@ export default function LeaveTypesPage() {
                             onClick={() => handleDeactivate(lt)}
                             disabled={deactivatingId === lt.id}
                             className="text-xs px-3 py-1.5 border border-red-300 text-red-600
-                              rounded-lg hover:bg-red-50 transition disabled:opacity-50"
+                              rounded-lg hover:bg-red-50 transition disabled:opacity-50 whitespace-nowrap"
                           >
                             {deactivatingId === lt.id ? '...' : 'Deactivate'}
                           </button>
-                        </>
+                        </div>
                       )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
