@@ -8,9 +8,10 @@ import EmployeeDashboardPage from './pages/employee/EmployeeDashboardPage'
 import ApplyLeavePage from './pages/employee/ApplyLeavePage'
 import MyLeavesPage from './pages/employee/MyLeavesPage'
 import MyBalancePage from './pages/employee/MyBalancePage'
-
-const ManagerDashboard = () => <div className="text-2xl font-bold text-gray-700">Manager Dashboard — Day 7</div>
-const AdminDashboard   = () => <div className="text-2xl font-bold text-gray-700">Admin Dashboard — Day 8</div>
+import ManagerDashboardPage from './pages/manager/ManagerDashboardPage'
+import TeamRequestsPage from './pages/manager/TeamRequestsPage'
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import EmployeesPage from './pages/admin/EmployeesPage'
 
 function App() {
   return (
@@ -39,7 +40,8 @@ function App() {
           <ProtectedRoute allowedRoles={['Manager', 'Admin']}>
             <Layout>
               <Routes>
-                <Route path="dashboard" element={<ManagerDashboard />} />
+                <Route path="dashboard" element={<ManagerDashboardPage />} />
+                <Route path="requests"  element={<TeamRequestsPage />} />
               </Routes>
             </Layout>
           </ProtectedRoute>
@@ -50,7 +52,8 @@ function App() {
           <ProtectedRoute allowedRoles={['Admin']}>
             <Layout>
               <Routes>
-                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="dashboard" element={<AdminDashboardPage />} />
+                <Route path="employees" element={<EmployeesPage />} />
               </Routes>
             </Layout>
           </ProtectedRoute>
