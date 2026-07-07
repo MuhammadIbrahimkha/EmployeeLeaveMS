@@ -12,6 +12,10 @@ import ManagerDashboardPage from './pages/manager/ManagerDashboardPage'
 import TeamRequestsPage from './pages/manager/TeamRequestsPage'
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
 import EmployeesPage from './pages/admin/EmployeesPage'
+import LeaveTypesPage from './pages/admin/LeaveTypesPage'
+import AssignBalancePage from './pages/admin/AssignBalancePage'
+import DepartmentsPage from './pages/admin/DepartmentsPage'
+import AllLeavesPage from './pages/admin/AllLeavesPage'
 
 function App() {
   return (
@@ -21,7 +25,7 @@ function App() {
         <Route path="/register"     element={<RegisterPage />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-        {/* Employee routes */}
+        {/* Employee */}
         <Route path="/employee/*" element={
           <ProtectedRoute allowedRoles={['Employee', 'Manager', 'Admin']}>
             <Layout>
@@ -35,7 +39,7 @@ function App() {
           </ProtectedRoute>
         } />
 
-        {/* Manager routes */}
+        {/* Manager */}
         <Route path="/manager/*" element={
           <ProtectedRoute allowedRoles={['Manager', 'Admin']}>
             <Layout>
@@ -47,13 +51,17 @@ function App() {
           </ProtectedRoute>
         } />
 
-        {/* Admin routes */}
+        {/* Admin */}
         <Route path="/admin/*" element={
           <ProtectedRoute allowedRoles={['Admin']}>
             <Layout>
               <Routes>
-                <Route path="dashboard" element={<AdminDashboardPage />} />
-                <Route path="employees" element={<EmployeesPage />} />
+                <Route path="dashboard"    element={<AdminDashboardPage />} />
+                <Route path="employees"    element={<EmployeesPage />} />
+                <Route path="leave-types"  element={<LeaveTypesPage />} />
+                <Route path="leaves"       element={<AllLeavesPage />} />
+                <Route path="departments"  element={<DepartmentsPage />} />
+                <Route path="assign-balance" element={<AssignBalancePage />} />
               </Routes>
             </Layout>
           </ProtectedRoute>

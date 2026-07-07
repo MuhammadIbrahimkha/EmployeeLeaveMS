@@ -18,12 +18,13 @@ const navItems = {
     { label: 'My Balance', path: '/employee/balance', icon: '📊' },
   ],
   Admin: [
-    { label: 'Dashboard', path: '/admin/dashboard', icon: '🏠' },
-    { label: 'Employees', path: '/admin/employees', icon: '👤' },
-    { label: 'Leave Types', path: '/admin/leave-types', icon: '🗂️' },
-    { label: 'All Leaves', path: '/admin/leaves', icon: '📋' },
-    { label: 'Departments', path: '/admin/departments', icon: '🏢' },
-  ],
+  { label: 'Dashboard',       path: '/admin/dashboard',      icon: '🏠' },
+  { label: 'Employees',       path: '/admin/employees',      icon: '👤' },
+  { label: 'Leave Types',     path: '/admin/leave-types',    icon: '🗂️' },
+  { label: 'All Leaves',      path: '/admin/leaves',         icon: '📋' },
+  { label: 'Departments',     path: '/admin/departments',    icon: '🏢' },
+  { label: 'Assign Balance',  path: '/admin/assign-balance', icon: '📊' },
+],
 }
 
 export default function Sidebar() {
