@@ -4,6 +4,14 @@ import { adminApi } from '../../api/adminApi'
 import { leaveTypeApi } from '../../api/leaveTypeApi'
 import { useAuth } from '../../context/AuthContext'
 import PageHeader from '../../components/PageHeader'
+import {
+  Users,
+  Building2,
+  FolderOpen,
+  ClipboardList,
+  PieChart,
+  ChevronRight,
+} from 'lucide-react'
 
 export default function AdminDashboardPage() {
   const { user } = useAuth()
@@ -30,63 +38,71 @@ export default function AdminDashboardPage() {
   }, [])
 
   const cards = [
-    { label: 'Total Employees',    value: stats.employees,   icon: '👤', color: 'bg-blue-50',   path: '/admin/employees'   },
-    { label: 'Departments',        value: stats.departments, icon: '🏢', color: 'bg-purple-50', path: '/admin/departments' },
-    { label: 'Leave Types',        value: stats.leaveTypes,  icon: '🗂️', color: 'bg-green-50',  path: '/admin/leave-types' },
-    { label: 'All Leave Requests', value: stats.allLeaves,   icon: '📋', color: 'bg-orange-50', path: '/admin/leaves'      },
+    { label: 'Total Employees',    value: stats.employees,   icon: Users,         iconColor: 'text-blue-600',   bgColor: 'bg-blue-50',   path: '/admin/employees'   },
+    { label: 'Departments',        value: stats.departments, icon: Building2,     iconColor: 'text-purple-600', bgColor: 'bg-purple-50', path: '/admin/departments' },
+    { label: 'Leave Types',        value: stats.leaveTypes,  icon: FolderOpen,    iconColor: 'text-green-600',  bgColor: 'bg-green-50',  path: '/admin/leave-types' },
+    { label: 'All Leave Requests', value: stats.allLeaves,   icon: ClipboardList, iconColor: 'text-orange-600', bgColor: 'bg-orange-50', path: '/admin/leaves'      },
+  ]
+
+  const quickActions = [
+    { label: 'Assign Leave Balance', path: '/admin/assign-balance', icon: PieChart      },
+    { label: 'Create Department',    path: '/admin/departments',    icon: Building2     },
+    { label: 'Manage Leave Types',   path: '/admin/leave-types',    icon: FolderOpen    },
+    { label: 'View All Employees',   path: '/admin/employees',      icon: Users         },
   ]
 
   return (
     <div>
       <PageHeader
-        title="Admin Dashboard 🛡️"
+        title="Admin Dashboard"
         subtitle={`Welcome back, ${user?.fullName?.split(' ')[0]}`}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
-        {cards.map(card => (
-          <Link
-            key={card.label}
-            to={card.path}
-            className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-4
-              hover:border-blue-300 hover:shadow-sm transition"
-          >
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 ${card.color}`}>
-              {card.icon}
-            </div>
-            <div className="min-w-0">
-              {isLoading ? (
-                <div className="h-7 w-10 bg-gray-200 rounded animate-pulse mb-1" />
-              ) : (
-                <p className="text-2xl font-bold text-gray-800">{card.value}</p>
-              )}
-              <p className="text-sm text-gray-500 truncate">{card.label}</p>
-            </div>
-          </Link>
-        ))}
+        {cards.map(card => {
+          const Icon = card.icon
+          return (
+            <Link
+              key={card.label}
+              to={card.path}
+              className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-4
+                hover:border-blue-300 hover:shadow-sm transition"
+            >
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${card.bgColor}`}>
+                <Icon size={22} className={card.iconColor} />
+              </div>
+              <div className="min-w-0">
+                {isLoading ? (
+                  <div className="h-7 w-10 bg-gray-200 rounded animate-pulse mb-1" />
+                ) : (
+                  <p className="text-2xl font-bold text-gray-800">{card.value}</p>
+                )}
+                <p className="text-sm text-gray-500 truncate">{card.label}</p>
+              </div>
+            </Link>
+          )
+        })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h3 className="font-semibold text-gray-700 mb-4">Quick Actions</h3>
           <div className="flex flex-col gap-3">
-            {[
-              { label: 'Assign Leave Balance', path: '/admin/assign-balance', icon: '📊' },
-              { label: 'Create Department',    path: '/admin/departments',    icon: '🏢' },
-              { label: 'Manage Leave Types',   path: '/admin/leave-types',    icon: '🗂️' },
-              { label: 'View All Employees',   path: '/admin/employees',      icon: '👥' },
-            ].map(action => (
-              <Link
-                key={action.label}
-                to={action.path}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200
-                  hover:bg-blue-50 hover:border-blue-300 transition text-sm text-gray-700"
-              >
-                <span>{action.icon}</span>
-                {action.label}
-                <span className="ml-auto text-gray-400">→</span>
-              </Link>
-            ))}
+            {quickActions.map(action => {
+              const Icon = action.icon
+              return (
+                <Link
+                  key={action.label}
+                  to={action.path}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200
+                    hover:bg-blue-50 hover:border-blue-300 transition text-sm text-gray-700"
+                >
+                  <Icon size={16} className="text-gray-500 flex-shrink-0" />
+                  {action.label}
+                  <ChevronRight size={16} className="ml-auto text-gray-400" />
+                </Link>
+              )
+            })}
           </div>
         </div>
 

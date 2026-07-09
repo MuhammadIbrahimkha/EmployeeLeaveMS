@@ -4,6 +4,7 @@ import PageHeader from '../../components/PageHeader'
 import Button from '../../components/Button'
 import Alert from '../../components/Alert'
 import Input from '../../components/Input'
+import { Plus } from 'lucide-react'
 
 function CreateDeptModal({ onClose, onDone }) {
   const [name, setName] = useState('')
@@ -77,11 +78,11 @@ export default function DepartmentsPage() {
       <PageHeader
         title="Departments"
         subtitle={`${departments.length} departments`}
-        action={
-          <Button onClick={() => setShowModal(true)} className="w-auto px-4 sm:px-6 text-sm">
-            + New Department
-          </Button>
-        }
+       action={
+  <Button onClick={() => setShowModal(true)} className="w-auto px-4 sm:px-6 text-sm flex items-center gap-2">
+    <Plus size={16} /> New Department
+  </Button>
+}
       />
 
       {toast && (

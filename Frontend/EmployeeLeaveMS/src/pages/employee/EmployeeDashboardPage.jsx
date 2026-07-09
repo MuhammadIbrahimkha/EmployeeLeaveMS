@@ -4,6 +4,12 @@ import { leaveApi } from '../../api/leaveApi'
 import { useAuth } from '../../context/AuthContext'
 import PageHeader from '../../components/PageHeader'
 import Button from '../../components/Button'
+import {
+  CalendarDays,
+  Clock,
+  CheckCircle2,
+  CalendarPlus,
+} from 'lucide-react'
 
 function BalanceCard({ leaveTypeName, totalDays, usedDays, remainingDays }) {
   const percentage = totalDays > 0 ? (usedDays / totalDays) * 100 : 0
@@ -40,11 +46,11 @@ function BalanceCard({ leaveTypeName, totalDays, usedDays, remainingDays }) {
   )
 }
 
-function StatCard({ label, value, icon, color }) {
+function StatCard({ label, value, icon: Icon, iconColor, bgColor }) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-4">
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 ${color}`}>
-        {icon}
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${bgColor}`}>
+        <Icon size={22} className={iconColor} />
       </div>
       <div className="min-w-0">
         <p className="text-2xl font-bold text-gray-800">{value}</p>
@@ -103,15 +109,17 @@ export default function EmployeeDashboardPage() {
         subtitle="Here's your leave overview for 2026"
         action={
           <Link to="/employee/apply">
-            <Button className="w-auto px-4 sm:px-6 text-sm">+ Apply for Leave</Button>
+            <Button className="w-auto px-4 sm:px-6 text-sm flex items-center gap-2">
+              <CalendarPlus size={16} /> Apply for Leave
+            </Button>
           </Link>
         }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <StatCard label="Total Days Remaining" value={totalRemaining} icon="📅" color="bg-blue-50" />
-        <StatCard label="Pending Requests"      value={pending}        icon="⏳" color="bg-yellow-50" />
-        <StatCard label="Approved This Year"    value={approved}       icon="✅" color="bg-green-50" />
+        <StatCard label="Total Days Remaining" value={totalRemaining} icon={CalendarDays} iconColor="text-blue-600"   bgColor="bg-blue-50"   />
+        <StatCard label="Pending Requests"      value={pending}        icon={Clock}         iconColor="text-yellow-600" bgColor="bg-yellow-50" />
+        <StatCard label="Approved This Year"    value={approved}       icon={CheckCircle2}  iconColor="text-green-600"  bgColor="bg-green-50"  />
       </div>
 
       <h3 className="text-lg font-semibold text-gray-700 mb-4">Leave Balance</h3>

@@ -4,6 +4,7 @@ import { leaveApi } from '../../api/leaveApi'
 import PageHeader from '../../components/PageHeader'
 import Button from '../../components/Button'
 import Alert from '../../components/Alert'
+import { CalendarPlus, FileText } from 'lucide-react'
 
 const STATUS_COLORS = {
   Pending:  'bg-yellow-100 text-yellow-700',
@@ -67,7 +68,9 @@ export default function MyLeavesPage() {
         subtitle={`${pagination.totalCount} total requests`}
         action={
           <Link to="/employee/apply">
-            <Button className="w-auto px-4 sm:px-6 text-sm">+ Apply for Leave</Button>
+            <Button className="w-auto px-4 sm:px-6 text-sm flex items-center gap-2">
+              <CalendarPlus size={16} /> Apply for Leave
+            </Button>
           </Link>
         }
       />
@@ -81,7 +84,7 @@ export default function MyLeavesPage() {
         </div>
       ) : leaves.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-          <p className="text-4xl mb-3">📋</p>
+          <FileText size={48} className="mx-auto mb-3 text-gray-300" />
           <p className="text-gray-500 text-sm">No leave requests yet.</p>
           <Link to="/employee/apply" className="text-blue-600 text-sm hover:underline mt-2 inline-block">
             Apply for your first leave →
@@ -118,10 +121,7 @@ export default function MyLeavesPage() {
                       <td className="px-4 py-3 text-gray-500 text-xs">
                         {leave.reviewedByName || '—'}
                         {leave.reviewComment && (
-                          <p
-                            className="text-gray-400 italic mt-0.5"
-                            title={leave.reviewComment}
-                          >
+                          <p className="text-gray-400 italic mt-0.5" title={leave.reviewComment}>
                             "{leave.reviewComment.length > 60
                               ? leave.reviewComment.slice(0, 60) + '...'
                               : leave.reviewComment}"
@@ -154,21 +154,15 @@ export default function MyLeavesPage() {
                 {Math.min(pagination.pageNumber * pagination.pageSize, pagination.totalCount)} of {pagination.totalCount}
               </p>
               <div className="flex gap-2">
-                <button
-                  onClick={() => loadLeaves(pagination.pageNumber - 1)}
+                <button onClick={() => loadLeaves(pagination.pageNumber - 1)}
                   disabled={pagination.pageNumber === 1}
-                  className="px-3 py-1 rounded border border-gray-300 disabled:opacity-40 hover:bg-gray-50"
-                >
+                  className="px-3 py-1 rounded border border-gray-300 disabled:opacity-40 hover:bg-gray-50">
                   ← Prev
                 </button>
-                <span className="px-3 py-1">
-                  Page {pagination.pageNumber} of {pagination.totalPages}
-                </span>
-                <button
-                  onClick={() => loadLeaves(pagination.pageNumber + 1)}
+                <span className="px-3 py-1">Page {pagination.pageNumber} of {pagination.totalPages}</span>
+                <button onClick={() => loadLeaves(pagination.pageNumber + 1)}
                   disabled={pagination.pageNumber === pagination.totalPages}
-                  className="px-3 py-1 rounded border border-gray-300 disabled:opacity-40 hover:bg-gray-50"
-                >
+                  className="px-3 py-1 rounded border border-gray-300 disabled:opacity-40 hover:bg-gray-50">
                   Next →
                 </button>
               </div>

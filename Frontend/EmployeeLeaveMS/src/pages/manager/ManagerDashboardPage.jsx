@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { leaveApi } from '../../api/leaveApi'
 import { useAuth } from '../../context/AuthContext'
 import PageHeader from '../../components/PageHeader'
+import { Clock, Users, CheckCircle2 } from 'lucide-react'
 
 export default function ManagerDashboardPage() {
   const { user } = useAuth()
@@ -16,10 +17,16 @@ export default function ManagerDashboardPage() {
       .finally(() => setIsLoading(false))
   }, [])
 
+  const statCards = [
+    { label: 'Pending Requests',    value: requests.length, icon: Clock,        iconColor: 'text-yellow-600', bgColor: 'bg-yellow-50' },
+    { label: 'Team Members',        value: '—',             icon: Users,        iconColor: 'text-blue-600',   bgColor: 'bg-blue-50'   },
+    { label: 'Approved This Month', value: '—',             icon: CheckCircle2, iconColor: 'text-green-600',  bgColor: 'bg-green-50'  },
+  ]
+
   return (
     <div>
       <PageHeader
-        title="Manager Dashboard 👔"
+        title="Manager Dashboard"
         subtitle={`Welcome back, ${user?.fullName?.split(' ')[0]}`}
         action={
           <Link
@@ -32,21 +39,20 @@ export default function ManagerDashboardPage() {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        {[
-          { label: 'Pending Requests',    value: requests.length, icon: '⏳', color: 'bg-yellow-50' },
-          { label: 'Team Members',        value: '—',             icon: '👥', color: 'bg-blue-50'   },
-          { label: 'Approved This Month', value: '—',             icon: '✅', color: 'bg-green-50'  },
-        ].map(card => (
-          <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 ${card.color}`}>
-              {card.icon}
+        {statCards.map(card => {
+          const Icon = card.icon
+          return (
+            <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-4">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${card.bgColor}`}>
+                <Icon size={22} className={card.iconColor} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-2xl font-bold text-gray-800">{card.value}</p>
+                <p className="text-sm text-gray-500 truncate">{card.label}</p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <p className="text-2xl font-bold text-gray-800">{card.value}</p>
-              <p className="text-sm text-gray-500 truncate">{card.label}</p>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       <h3 className="text-lg font-semibold text-gray-700 mb-4">Pending Team Requests</h3>
@@ -57,7 +63,7 @@ export default function ManagerDashboardPage() {
         </div>
       ) : requests.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-200 p-10 text-center text-gray-400">
-          <p className="text-3xl mb-2">🎉</p>
+          <CheckCircle2 size={40} className="mx-auto mb-3 text-green-400" />
           No pending requests from your team.
         </div>
       ) : (

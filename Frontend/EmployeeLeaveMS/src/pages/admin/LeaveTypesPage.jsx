@@ -4,6 +4,7 @@ import PageHeader from '../../components/PageHeader'
 import Button from '../../components/Button'
 import Alert from '../../components/Alert'
 import Input from '../../components/Input'
+import { Plus } from 'lucide-react'
 
 function LeaveTypeModal({ leaveType, onClose, onDone }) {
   const isEdit = !!leaveType
@@ -117,10 +118,10 @@ export default function LeaveTypesPage() {
         title="Leave Types"
         subtitle="Manage available leave types for employees"
         action={
-          <Button onClick={() => setModal('create')} className="w-auto px-4 sm:px-6 text-sm">
-            + New Leave Type
-          </Button>
-        }
+  <Button onClick={() => setModal('create')} className="w-auto px-4 sm:px-6 text-sm flex items-center gap-2">
+    <Plus size={16} /> New Leave Type
+  </Button>
+}
       />
 
       {toast && (

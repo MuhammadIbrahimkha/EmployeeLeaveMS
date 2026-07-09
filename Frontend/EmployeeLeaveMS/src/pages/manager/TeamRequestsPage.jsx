@@ -3,6 +3,7 @@ import { leaveApi } from '../../api/leaveApi'
 import PageHeader from '../../components/PageHeader'
 import Button from '../../components/Button'
 import Alert from '../../components/Alert'
+import { PartyPopper } from 'lucide-react'
 
 function ReviewModal({ request, onClose, onDone }) {
   const [action, setAction] = useState(null)
@@ -158,11 +159,11 @@ export default function TeamRequestsPage() {
         <div className="flex justify-center py-20">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
         </div>
-      ) : requests.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-          <p className="text-4xl mb-3">🎉</p>
-          <p className="text-gray-500">No pending requests from your team.</p>
-        </div>
+     ) : requests.length === 0 ? (
+  <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+    <PartyPopper size={48} className="mx-auto mb-3 text-green-400" />
+    <p className="text-gray-500">No pending requests from your team.</p>
+  </div>
       ) : (
         <>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">

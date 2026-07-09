@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { adminApi } from '../../api/adminApi'
 import PageHeader from '../../components/PageHeader'
+import { Search } from 'lucide-react'
 
 const ROLE_COLORS = {
   Admin:    'bg-purple-100 text-purple-700',
@@ -97,11 +98,11 @@ export default function EmployeesPage() {
         <div className="flex justify-center py-20">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
         </div>
-      ) : employees.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400">
-          <p className="text-3xl mb-2">🔍</p>
-          No employees found.
-        </div>
+     ) : employees.length === 0 ? (
+  <div className="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400">
+    <Search size={48} className="mx-auto mb-3 text-gray-300" />
+    No employees found.
+  </div>
       ) : (
         <>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
