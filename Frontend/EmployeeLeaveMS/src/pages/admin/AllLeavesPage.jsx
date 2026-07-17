@@ -264,17 +264,21 @@ export default function AllLeavesPage() {
                           </p>
                         )}
                       </td>
-                      <td className="px-4 py-3">
-                        {l.status === 'Pending' && (
-                          <button
-                            onClick={() => setSelectedLeave(l)}
-                            className="text-xs px-3 py-1.5 bg-blue-600 text-white
-                              rounded-lg hover:bg-blue-700 transition whitespace-nowrap"
-                          >
-                            Review
-                          </button>
-                        )}
-                      </td>
+                 
+                    <td className="px-4 py-3">
+                      {l.status === 'Pending' && (l.employeeRole === 'Manager' || l.employeeRole === 'Admin') && (
+                        <button
+                          onClick={() => setSelectedLeave(l)}
+                          className="text-xs px-3 py-1.5 bg-blue-600 text-white
+                            rounded-lg hover:bg-blue-700 transition whitespace-nowrap"
+                        >
+                          Review
+                        </button>
+                      )}
+                      {l.status === 'Pending' && l.employeeRole === 'Employee' && (
+                        <span className="text-xs text-gray-400 italic">Manager reviews</span>
+                      )}
+                    </td>
                     </tr>
                   ))}
                 </tbody>

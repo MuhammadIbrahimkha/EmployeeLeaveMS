@@ -26,24 +26,20 @@ namespace EmployeeLeaveMS.Application.Mappings
 
             // ── Leave Requests ────────────────────────────────────────────
             CreateMap<LeaveRequest, LeaveRequestDto>()
-                .ForMember(dest => dest.EmployeeName,
-                           opt => opt.MapFrom(src =>
-                               src.Employee != null
-                                   ? src.Employee.FullName
-                                   : string.Empty))
-                .ForMember(dest => dest.LeaveTypeName,
-                           opt => opt.MapFrom(src =>
-                               src.LeaveType != null
-                                   ? src.LeaveType.Name
-                                   : string.Empty))
-                .ForMember(dest => dest.Status,
-                           opt => opt.MapFrom(src => src.Status.ToString()))
-                .ForMember(dest => dest.ReviewedByName,
-                           opt => opt.MapFrom(src =>
-                               src.ReviewedBy != null
-                                   ? src.ReviewedBy.FullName
-                                   : null));
-
+     .ForMember(dest => dest.EmployeeName,
+         opt => opt.MapFrom(src =>
+             src.Employee != null ? src.Employee.FullName : string.Empty))
+     .ForMember(dest => dest.LeaveTypeName,
+         opt => opt.MapFrom(src =>
+             src.LeaveType != null ? src.LeaveType.Name : string.Empty))
+     .ForMember(dest => dest.Status,
+         opt => opt.MapFrom(src => src.Status.ToString()))
+     .ForMember(dest => dest.ReviewedByName,
+         opt => opt.MapFrom(src =>
+             src.ReviewedBy != null ? src.ReviewedBy.FullName : null))
+     .ForMember(dest => dest.EmployeeRole,
+         opt => opt.MapFrom(src =>
+             src.Employee != null ? src.Employee.Role.ToString() : string.Empty));
             // ── Leave Balances (Employee view) ────────────────────────────
             CreateMap<LeaveBalance, LeaveBalanceDto>()
                 .ForMember(dest => dest.LeaveTypeName,

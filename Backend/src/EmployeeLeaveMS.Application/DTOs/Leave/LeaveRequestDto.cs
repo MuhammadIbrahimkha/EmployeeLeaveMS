@@ -5,6 +5,7 @@
         public Guid Id { get; set; }
         public string EmployeeName { get; set; } = string.Empty;
         public string LeaveTypeName { get; set; } = string.Empty;
+        public string EmployeeRole { get; set; } = string.Empty;
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public int TotalDays { get; set; }
