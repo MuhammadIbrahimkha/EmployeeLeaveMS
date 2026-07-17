@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import { authApi } from '../../api/authApi'
-import { adminApi } from '../../api/adminApi'
 import { useAuth } from '../../context/AuthContext'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
@@ -24,22 +24,17 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    // Load departments for the dropdown
-    const loadDepartments = async () => {
-      try {
-        const res = await adminApi.getDepartments()
-        setDepartments(res.data.data || [])
-      } catch {
-        // Departments failed to load - not critical, user can try again
-      }
-    }
-    loadDepartments()
+    // Plain axios — bypasses our auth interceptor completely
+    // so a 401 never triggers window.location.href = '/login'
+    axios.get('/api/public/departments')
+      .then(res => setDepartments(res.data.data || []))
+      .catch(() => {})
   }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }))
+    setFormData(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }))
   }
 
   const validate = () => {
@@ -73,20 +68,19 @@ export default function RegisterPage() {
 
     setIsLoading(true)
     try {
-const { confirmPassword: _confirmPassword, ...registerData } = formData
+      const { confirmPassword: _confirmPassword, ...registerData } = formData
       const response = await authApi.register(registerData)
       const { accessToken, refreshToken, fullName, email, role } =
         response.data.data
 
       login({ fullName, email, role }, accessToken, refreshToken)
       navigate('/employee/dashboard')
-
     } catch (err) {
-      const message =
+      setApiError(
         err.response?.data?.errors?.[0] ||
         err.response?.data?.message ||
         'Registration failed. Please try again.'
-      setApiError(message)
+      )
     } finally {
       setIsLoading(false)
     }
@@ -97,7 +91,6 @@ const { confirmPassword: _confirmPassword, ...registerData } = formData
       flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8">
 
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-800">Create account</h1>
           <p className="text-gray-500 text-sm mt-1">
@@ -128,7 +121,6 @@ const { confirmPassword: _confirmPassword, ...registerData } = formData
             required
           />
 
-          {/* Department Dropdown */}
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">
               Department <span className="text-red-500">*</span>
@@ -141,11 +133,10 @@ const { confirmPassword: _confirmPassword, ...registerData } = formData
                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 ${errors.departmentId
                   ? 'border-red-400 bg-red-50'
-                  : 'border-gray-300 bg-white'
-                }`}
+                  : 'border-gray-300 bg-white'}`}
             >
               <option value="">Select your department</option>
-              {departments.map((dept) => (
+              {departments.map(dept => (
                 <option key={dept.id} value={dept.id}>
                   {dept.name}
                 </option>

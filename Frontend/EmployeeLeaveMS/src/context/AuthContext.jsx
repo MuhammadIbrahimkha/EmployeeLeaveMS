@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { tokenManager } from '../utils/tokenManager'
+import axios from 'axios'
 
 const AuthContext = createContext(null)
 
@@ -8,22 +9,47 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // On app load, check if a refresh token exists
-    // If yes, the user was previously logged in
-    // We restore their session data from localStorage
-    const refreshToken = tokenManager.getRefreshToken()
-    const savedUser = localStorage.getItem('user')
+    const verifySession = async () => {
+      const refreshToken = tokenManager.getRefreshToken()
+      const savedUser = localStorage.getItem('user')
 
-    if (refreshToken && savedUser) {
+      if (!refreshToken || !savedUser) {
+        // Nothing stored — definitely not logged in
+        setIsLoading(false)
+        return
+      }
+
       try {
-        setUser(JSON.parse(savedUser))
+        // Verify the refresh token is still valid
+        const response = await axios.post('/api/auth/refresh-token', {
+          refreshToken,
+        })
+
+        const {
+          accessToken,
+          refreshToken: newRefreshToken,
+          fullName,
+          email,
+          role,
+        } = response.data.data
+
+        tokenManager.setAccessToken(accessToken)
+        tokenManager.setRefreshToken(newRefreshToken)
+
+        const userData = { fullName, email, role }
+        localStorage.setItem('user', JSON.stringify(userData))
+        setUser(userData)
       } catch {
+        // Token expired or revoked — clear everything silently
         tokenManager.clearAll()
         localStorage.removeItem('user')
+        setUser(null)
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    setIsLoading(false)
+    verifySession()
   }, [])
 
   const login = (userData, accessToken, refreshToken) => {
@@ -51,7 +77,6 @@ export function AuthProvider({ children }) {
   )
 }
 
-// Custom hook - any component calls useAuth() to access auth state
 export function useAuth() {
   const context = useContext(AuthContext)
   if (!context) {

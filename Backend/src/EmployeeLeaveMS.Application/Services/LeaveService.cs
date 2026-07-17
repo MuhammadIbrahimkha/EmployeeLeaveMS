@@ -151,10 +151,16 @@ namespace EmployeeLeaveMS.Application.Services
                 return ServiceResult<LeaveRequestDto>.Fail(
                     "Only pending leave requests can be approved.");
 
+            // After
             var employee = await _unitOfWork.Users
                 .GetByIdAsync(leaveRequest.EmployeeId);
 
-            if (employee is null || employee.ManagerId != managerId)
+            var approvingUser = await _unitOfWork.Users
+                .GetByIdAsync(managerId);
+
+            bool isAdmin = approvingUser?.Role == UserRole.Admin;
+
+            if (employee is null || (!isAdmin && employee.ManagerId != managerId))
                 return ServiceResult<LeaveRequestDto>.Fail(
                     "You can only approve requests from your direct reports.");
 
@@ -209,10 +215,16 @@ namespace EmployeeLeaveMS.Application.Services
                 return ServiceResult<LeaveRequestDto>.Fail(
                     "Only pending leave requests can be rejected.");
 
+            // After
             var employee = await _unitOfWork.Users
                 .GetByIdAsync(leaveRequest.EmployeeId);
 
-            if (employee is null || employee.ManagerId != managerId)
+            var approvingUser = await _unitOfWork.Users
+                .GetByIdAsync(managerId);
+
+            bool isAdmin = approvingUser?.Role == UserRole.Admin;
+
+            if (employee is null || (!isAdmin && employee.ManagerId != managerId))
                 return ServiceResult<LeaveRequestDto>.Fail(
                     "You can only reject requests from your direct reports.");
 
