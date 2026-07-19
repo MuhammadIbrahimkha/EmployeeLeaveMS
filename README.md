@@ -21,7 +21,7 @@ EmployeeLeaveMS.Domain          → Entities, Enums, Exceptions — zero externa
 EmployeeLeaveMS.Application     → Services, DTOs, Interfaces, AutoMapper profiles, Validation
 EmployeeLeaveMS.Infrastructure  → EF Core, Repositories, JWT, Serilog
 EmployeeLeaveMS.API             → Controllers, Middleware, Swagger
-EmployeeLeaveMS.Tests           → xUnit + Moq unit tests for the Application layer
+
 ```
 
 | Layer | Depends On |
@@ -30,7 +30,6 @@ EmployeeLeaveMS.Tests           → xUnit + Moq unit tests for the Application l
 | Application | Domain only |
 | Infrastructure | Domain + Application |
 | API | Application + Infrastructure |
-| Tests | Application only |
 
 ---
 
@@ -45,7 +44,6 @@ EmployeeLeaveMS.Tests           → xUnit + Moq unit tests for the Application l
 | Mapping | AutoMapper |
 | Documentation | Swagger / Swashbuckle |
 | Logging | Serilog (console + rolling file) |
-| Testing | xUnit + Moq |
 | Frontend (Phase 2) | React 18, Tailwind CSS |
 
 ---
@@ -66,7 +64,6 @@ EmployeeLeaveMS.Tests           → xUnit + Moq unit tests for the Application l
 - ✔️ Data Annotation validation on all DTOs with consistent error response shape
 - 📋 Structured logging via Serilog — request logging, error logging, request/user context
 - 📑 Full Swagger API documentation with JWT bearer auth support
-- 🧪 Unit tested service layer (xUnit + Moq) — 9+ tests covering auth and leave business logic
 
 See [`SRS_EmployeeLeaveMS.pdf`](./docs/SRS_EmployeeLeaveMS.pdf) for the complete Software Requirements Specification.
 
@@ -109,9 +106,8 @@ See [`SRS_EmployeeLeaveMS.pdf`](./docs/SRS_EmployeeLeaveMS.pdf) for the complete
 | Day 8 | Leave type, balance, and department management | ✅ |
 | Day 9 | AutoMapper refactor | ✅ |
 | Day 10 | Pagination, filtering, search | ✅ |
-| Day 11 | Unit testing — xUnit + Moq | ✅ |
-| Day 12 | Swagger documentation polish | ✅ |
-| Day 13 | Final cleanup — validation, full regression sweep | ✅ |
+| Day 11 | Swagger documentation polish | ✅ |
+| Day 12 | Final cleanup — validation, full regression sweep | ✅ |
 
 **Backend is feature-complete and ready for the React frontend (Phase 2).**
 
@@ -133,8 +129,6 @@ dotnet ef database update --project src/EmployeeLeaveMS.Infrastructure --startup
 # Run the API
 dotnet run --project src/EmployeeLeaveMS.API
 
-# Run unit tests
-dotnet test
 ```
 
 Swagger UI available at `https://localhost:{port}/swagger` once running.
@@ -170,8 +164,6 @@ EmployeeLeaveMS_Backend/
 │   │   ├── Middleware/       → GlobalExceptionMiddleware, RequestLoggingMiddleware
 │   │   ├── Services/         → CurrentUserService
 │   │   └── Models/           → ErrorResponse
-│   └── EmployeeLeaveMS.Tests/
-│       └── Services/         → AuthServiceTests, LeaveServiceTests
 └── EmployeeLeaveMS_Backend.sln
 ```
 
