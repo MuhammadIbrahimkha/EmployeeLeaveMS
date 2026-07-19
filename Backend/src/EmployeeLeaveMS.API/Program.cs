@@ -111,7 +111,7 @@ try
 
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
+    //builder.Services.AddHealthChecks();
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowReactApp", policy =>
