@@ -65,8 +65,6 @@ EmployeeLeaveMS.API             → Controllers, Middleware, Swagger
 - 📋 Structured logging via Serilog — request logging, error logging, request/user context
 - 📑 Full Swagger API documentation with JWT bearer auth support
 
-See [`SRS_EmployeeLeaveMS.pdf`](./docs/SRS_EmployeeLeaveMS.pdf) for the complete Software Requirements Specification.
-
 ---
 
 ## 👥 User Roles
@@ -175,7 +173,7 @@ EmployeeLeaveMS_Backend/
 Junior .NET Developer | Islamabad, Pakistan
 Built this project day-by-day as a portfolio piece while seeking a junior .NET developer role.
 
-🔗 [LinkedIn](#) — followed a public 30-day build challenge documenting this project's progress from Day 1 to backend completion.
+🔗 [LinkedIn](https://www.linkedin.com/in/muhammad-ibrahim33/) — followed a public 30-day build challenge documenting this project's progress from Day 1 to backend completion.
 
 ---
 
