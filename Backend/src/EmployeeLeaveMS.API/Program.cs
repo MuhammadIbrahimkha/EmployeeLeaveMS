@@ -147,14 +147,13 @@ try
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-        //app.UseHsts();
     }
 
     app.UseHttpsRedirection();
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
-    //app.MapHealthChecks("/health");
+
     app.Run();
 }
 catch (Exception ex)
